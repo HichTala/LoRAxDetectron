@@ -12,6 +12,7 @@ from torch import nn
 from lora_detectron.modeling.backbone.resnet import build_lora_resnet_backbone
 from lora_detectron.layers import LoraConv2d
 
+
 class FPN(Backbone):
     """
     This module implements :paper:`FPN`.
@@ -87,7 +88,7 @@ class FPN(Backbone):
             weight_init.c2_xavier_fill(lora_lateral_conv)
             weight_init.c2_xavier_fill(output_conv)
             stage = int(math.log2(strides[idx]))
-            self.add_module("fpn_lateral{}".format(stage), lora_lateral_conv)
+            self.add_module("fpn_lora_lateral{}".format(stage), lora_lateral_conv)
             self.add_module("fpn_output{}".format(stage), output_conv)
 
             lateral_convs.append(lora_lateral_conv)
