@@ -10,7 +10,7 @@ from fvcore.nn import weight_init
 from torch import nn
 
 from lora_detectron.modeling.backbone.resnet import build_lora_resnet_backbone
-
+from lora_detectron.layers import LoraConv2d
 
 class FPN(Backbone):
     """
@@ -72,10 +72,10 @@ class FPN(Backbone):
             lateral_norm = get_norm(norm, out_channels)
             output_norm = get_norm(norm, out_channels)
 
-            lateral_conv = lora.Conv2d(
+            lateral_conv = LoraConv2d(
                 in_channels, out_channels, kernel_size=1, bias=use_bias, norm=lateral_norm
             )
-            output_conv = lora.Conv2d(
+            output_conv = LoraConv2d(
                 out_channels,
                 out_channels,
                 kernel_size=3,
