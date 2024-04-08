@@ -11,7 +11,9 @@ from detectron2.modeling.backbone import ResNet
 from detectron2.modeling.backbone.build import BACKBONE_REGISTRY
 from fvcore.nn import weight_init
 from torch import nn
+
 from lora_detectron.layers import LoraConv2d
+
 
 class LoraBasicBlock(CNNBlockBase):
     """

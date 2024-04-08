@@ -72,7 +72,7 @@ class FPN(Backbone):
             lateral_norm = get_norm(norm, out_channels)
             output_norm = get_norm(norm, out_channels)
 
-            lateral_conv = LoraConv2d(
+            lora_lateral_conv = LoraConv2d(
                 in_channels, out_channels, kernel_size=1, bias=use_bias, norm=lateral_norm
             )
             output_conv = LoraConv2d(
