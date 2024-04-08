@@ -8,7 +8,7 @@ from detectron2.layers import (
     ModulatedDeformConv,
 )
 from detectron2.modeling.backbone import ResNet
-from detectron2.modeling.build import BACKBONE_REGISTRY
+from detectron2.modeling.backbone.build import BACKBONE_REGISTRY
 from fvcore.nn import weight_init
 from torch import nn
 
