@@ -11,7 +11,7 @@ from detectron2.modeling.backbone import ResNet
 from detectron2.modeling.backbone.build import BACKBONE_REGISTRY
 from fvcore.nn import weight_init
 from torch import nn
-
+from lora_detectron.layers import LoraConv2d
 
 class LoraBasicBlock(CNNBlockBase):
     """
@@ -31,7 +31,7 @@ class LoraBasicBlock(CNNBlockBase):
         super().__init__(in_channels, out_channels, stride)
 
         if in_channels != out_channels:
-            self.shortcut = lora.Conv2d(
+            self.shortcut = LoraConv2d(
                 in_channels,
                 out_channels,
                 kernel_size=1,
@@ -42,7 +42,7 @@ class LoraBasicBlock(CNNBlockBase):
         else:
             self.shortcut = None
 
-        self.conv1 = lora.Conv2d(
+        self.conv1 = LoraConv2d(
             in_channels,
             out_channels,
             kernel_size=3,
@@ -52,7 +52,7 @@ class LoraBasicBlock(CNNBlockBase):
             norm=get_norm(norm, out_channels),
         )
 
-        self.conv2 = lora.Conv2d(
+        self.conv2 = LoraConv2d(
             out_channels,
             out_channels,
             kernel_size=3,
@@ -114,7 +114,7 @@ class LoraBottleneckBlock(CNNBlockBase):
         super().__init__(in_channels, out_channels, stride)
 
         if in_channels != out_channels:
-            self.shortcut = lora.Conv2d(
+            self.shortcut = LoraConv2d(
                 in_channels,
                 out_channels,
                 kernel_size=1,
@@ -130,7 +130,7 @@ class LoraBottleneckBlock(CNNBlockBase):
         # stride in the 3x3 conv
         stride_1x1, stride_3x3 = (stride, 1) if stride_in_1x1 else (1, stride)
 
-        self.conv1 = lora.Conv2d(
+        self.conv1 = LoraConv2d(
             in_channels,
             bottleneck_channels,
             kernel_size=1,
@@ -139,7 +139,7 @@ class LoraBottleneckBlock(CNNBlockBase):
             norm=get_norm(norm, bottleneck_channels),
         )
 
-        self.conv2 = lora.Conv2d(
+        self.conv2 = LoraConv2d(
             bottleneck_channels,
             bottleneck_channels,
             kernel_size=3,
@@ -151,7 +151,7 @@ class LoraBottleneckBlock(CNNBlockBase):
             norm=get_norm(norm, bottleneck_channels),
         )
 
-        self.conv3 = lora.Conv2d(
+        self.conv3 = LoraConv2d(
             bottleneck_channels,
             out_channels,
             kernel_size=1,
@@ -218,7 +218,7 @@ class LoraDeformBottleneckBlock(CNNBlockBase):
         self.deform_modulated = deform_modulated
 
         if in_channels != out_channels:
-            self.shortcut = lora.Conv2d(
+            self.shortcut = LoraConv2d(
                 in_channels,
                 out_channels,
                 kernel_size=1,
@@ -231,7 +231,7 @@ class LoraDeformBottleneckBlock(CNNBlockBase):
 
         stride_1x1, stride_3x3 = (stride, 1) if stride_in_1x1 else (1, stride)
 
-        self.conv1 = lora.Conv2d(
+        self.conv1 = LoraConv2d(
             in_channels,
             bottleneck_channels,
             kernel_size=1,
@@ -248,7 +248,7 @@ class LoraDeformBottleneckBlock(CNNBlockBase):
             deform_conv_op = DeformConv
             offset_channels = 18
 
-        self.conv2_offset = lora.Conv2d(
+        self.conv2_offset = LoraConv2d(
             bottleneck_channels,
             offset_channels * deform_num_groups,
             kernel_size=3,
@@ -269,7 +269,7 @@ class LoraDeformBottleneckBlock(CNNBlockBase):
             norm=get_norm(norm, bottleneck_channels),
         )
 
-        self.conv3 = lora.Conv2d(
+        self.conv3 = LoraConv2d(
             bottleneck_channels,
             out_channels,
             kernel_size=1,
@@ -325,7 +325,7 @@ class LoraBasicStem(CNNBlockBase):
         """
         super().__init__(in_channels, out_channels, 4)
         self.in_channels = in_channels
-        self.conv1 = lora.Conv2d(
+        self.conv1 = LoraConv2d(
             in_channels,
             out_channels,
             kernel_size=7,
