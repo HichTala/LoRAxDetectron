@@ -84,13 +84,13 @@ class FPN(Backbone):
                 bias=use_bias,
                 norm=output_norm,
             )
-            weight_init.c2_xavier_fill(lateral_conv)
+            weight_init.c2_xavier_fill(lora_lateral_conv)
             weight_init.c2_xavier_fill(output_conv)
             stage = int(math.log2(strides[idx]))
-            self.add_module("fpn_lateral{}".format(stage), lateral_conv)
+            self.add_module("fpn_lateral{}".format(stage), lora_lateral_conv)
             self.add_module("fpn_output{}".format(stage), output_conv)
 
-            lateral_convs.append(lateral_conv)
+            lateral_convs.append(lora_lateral_conv)
             output_convs.append(output_conv)
         # Place convs into top-down order (from low to high resolution)
         # to make the top-down computation in forward clearer.
